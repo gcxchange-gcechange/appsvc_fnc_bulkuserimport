@@ -13,6 +13,7 @@ namespace appsvc_fnc_dev_bulkuserimport
     {
         public static class Globals
         {
+            //Global class so other class can access variables
             static IConfiguration config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .AddEnvironmentVariables()
@@ -23,9 +24,7 @@ namespace appsvc_fnc_dev_bulkuserimport
 
         }
         [FunctionName("CreateUser")]
-        public static async Task RunAsync(
-            [QueueTrigger("bulkimportuserlist")] BulkInfo bulk,
-            ILogger log)
+        public static async Task RunAsync([QueueTrigger("bulkimportuserlist")] BulkInfo bulk, ILogger log)
         {
 
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -38,25 +37,22 @@ namespace appsvc_fnc_dev_bulkuserimport
 
             var result = await getListItems(graphAPIAuth, listID, siteID, log);
 
-            // var createUser = await UserCreation(graphAPIAuth, EmailCloud, FirstName, LastName, redirectLink, log);
-
-            if (result == "false")
+            if (result == false)
             {
                 throw new SystemException("Error");
             }
         }
 
-        public static async Task<string> getListItems(GraphServiceClient graphServiceClient, string listID, string siteID, ILogger log)
+        public static async Task<bool> getListItems(GraphServiceClient graphServiceClient, string listID, string siteID, ILogger log)
         {
-            //List<string> list = new List<string>();
-            //  var list = new IListItemsCollectionPage();
+            bool result = false;
             IListItemsCollectionPage list = new ListItemsCollectionPage();
             List<UsersList> userList = new List<UsersList>();
             try
             {
                 var queryOptions = new List<QueryOption>()
                     {
-                        new QueryOption("expand", "fields(select=FirstName,LastName,DepartmentEmail,WorkEmail)")
+                        new QueryOption("expand", "fields(select=FirstName,LastName,DepartmentEmail,WorkEmail,Status)")
                     };
                 list = await graphServiceClient.Sites[siteID].Lists[listID].Items
                         .Request(queryOptions)
@@ -64,38 +60,30 @@ namespace appsvc_fnc_dev_bulkuserimport
 
                 foreach (var item in list)
                 {
-                    var FirstName = item.Fields.AdditionalData["FirstName"];
-                    log.LogInformation($"{FirstName}");
-                    var LastName = item.Fields.AdditionalData["LastName"];
-                    log.LogInformation($"{LastName}");
-                    log.LogInformation("Name:" + item.Name);
-                    log.LogInformation($"ID: {item.Id}");
-                    userList.Add(new UsersList()
+                    //If status is not pending this mean it already run, don't run it again
+                    if (item.Fields.AdditionalData["Status"].ToString() == "Pending")
                     {
-                        Id = item.Id,
-                        FirstName = item.Fields.AdditionalData["FirstName"].ToString(),
-                        LastName = item.Fields.AdditionalData["LastName"].ToString(),
-                        DepartmentEmail = item.Fields.AdditionalData["DepartmentEmail"].ToString(),
-                        WorkEmail = item.Fields.AdditionalData["WorkEmail"].ToString()
-                    });
+                        userList.Add(new UsersList()
+                        {
+                            Id = item.Id,
+                            FirstName = item.Fields.AdditionalData["FirstName"].ToString(),
+                            LastName = item.Fields.AdditionalData["LastName"].ToString(),
+                            DepartmentEmail = item.Fields.AdditionalData["DepartmentEmail"].ToString(),
+                            WorkEmail = item.Fields.AdditionalData["WorkEmail"].ToString(),
+                        });
 
-                    await UserCreation(graphServiceClient, userList, listID, siteID, log);
-
-                    userList.Clear();
+                        await UserCreation(graphServiceClient, userList, listID, siteID, log);
+                        userList.Clear();
+                    }
                 }
-
-
-                //return list;
+                result = true;
             }
             catch (ServiceException ex)
             {
                 log.LogInformation($"Error getting list : {ex.Message}");
-                //return "something";
-                //InviteInfo.Add("Invitation error");
+                result = false;
             };
-
-            //return await Task.FromResult("true");
-            return "yes";
+            return result;
         }
 
         public static async Task<bool> UserCreation(GraphServiceClient graphServiceClient, List<UsersList> usersList, string listID, string siteID, ILogger log)
@@ -103,9 +91,7 @@ namespace appsvc_fnc_dev_bulkuserimport
             string status = "Progress";
             string errorMessage = "";
             bool result = false;
-            log.LogInformation("in usercreation");
-            //List<string> InviteInfo = new List<string>();
-            //IListItemsCollectionPage list = usersList;
+
             foreach (var item in usersList)
             {
                 //update list with InProgress
@@ -115,13 +101,13 @@ namespace appsvc_fnc_dev_bulkuserimport
                 var LastName = item.LastName;
                 var FirstName = item.FirstName;
                 var UserEmail = item.WorkEmail;
-                log.LogInformation($"{LastName}");
-                log.LogInformation($"{item.Id}");
                 bool isUserExist = true;
+
                 // check if user exist
                 try
                 {
                     var userExist = await graphServiceClient.Users.Request().Filter($"mail eq '{item.WorkEmail}'").GetAsync();
+
                     if (userExist.Count > 0)
                     {
                         isUserExist = true;
@@ -145,7 +131,6 @@ namespace appsvc_fnc_dev_bulkuserimport
                     isUserExist = true;
                     result = false;
                 }
-
 
                 if (isUserExist == false)
                 {
@@ -295,7 +280,6 @@ namespace appsvc_fnc_dev_bulkuserimport
             }
             catch (Exception ex)
             {
-                //var listID = CreateUser.listID
                 log.LogInformation($"Error adding User groups : {ex.Message}");
                 string status = "Error";
                 string errorMessage = ex.Message;
@@ -398,10 +382,6 @@ namespace appsvc_fnc_dev_bulkuserimport
                     {"ErrorMessage", errorMessage}
                 }
             };
-            log.LogInformation($"Update item {itemID}");
-            log.LogInformation($"Update list {listID}");
-            log.LogInformation($"Update site {siteID}");
-
 
             try
             {
