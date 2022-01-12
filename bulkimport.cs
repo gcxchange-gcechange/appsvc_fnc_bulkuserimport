@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace appsvc_fnc_dev_bulkuserimport
 {
@@ -21,8 +20,8 @@ namespace appsvc_fnc_dev_bulkuserimport
             public static readonly string welcomeGroup = config["welcomeGroup"];
             public static readonly string GCX_Assigned = config["gcxAssigned"];
             public static readonly string UserSender = config["UserSender"];
-
         }
+
         [FunctionName("CreateUser")]
         public static async Task RunAsync([QueueTrigger("bulkimportuserlist")] BulkInfo bulk, ILogger log)
         {
@@ -52,7 +51,12 @@ namespace appsvc_fnc_dev_bulkuserimport
             {
                 var queryOptions = new List<QueryOption>()
                     {
-                        new QueryOption("expand", "fields(select=FirstName,LastName,DepartmentEmail,WorkEmail,Status)")
+                    //field_1 = FirstName
+                    //field_2 = LastName
+                    //field_3 = DepartmentEmail
+                    //field_4 = WorkEmail
+                    //field_5 = Status
+                        new QueryOption("expand", "fields(select=field_1,field_2,field_3,field_4,field_5)")
                     };
                 list = await graphServiceClient.Sites[siteID].Lists[listID].Items
                         .Request(queryOptions)
@@ -60,16 +64,24 @@ namespace appsvc_fnc_dev_bulkuserimport
 
                 foreach (var item in list)
                 {
+                    log.LogInformation(item.Fields.AdditionalData["field_2"].ToString());
+                    log.LogInformation(item.Id);
+
                     //If status is not pending this mean it already run, don't run it again
-                    if (item.Fields.AdditionalData["Status"].ToString() == "Pending")
+                    if (item.Fields.AdditionalData["field_5"].ToString() == "Pending" 
+                        && item.Fields.AdditionalData["field_1"].ToString() != "" 
+                        && item.Fields.AdditionalData["field_2"].ToString() != "" 
+                        && item.Fields.AdditionalData["field_3"].ToString() != "" 
+                        && item.Fields.AdditionalData["field_4"].ToString() != "")
                     {
+                        log.LogInformation(item.Fields.AdditionalData["field_2"].ToString());
                         userList.Add(new UsersList()
                         {
                             Id = item.Id,
-                            FirstName = item.Fields.AdditionalData["FirstName"].ToString(),
-                            LastName = item.Fields.AdditionalData["LastName"].ToString(),
-                            DepartmentEmail = item.Fields.AdditionalData["DepartmentEmail"].ToString(),
-                            WorkEmail = item.Fields.AdditionalData["WorkEmail"].ToString(),
+                            FirstName = item.Fields.AdditionalData["field_1"].ToString(),
+                            LastName = item.Fields.AdditionalData["field_2"].ToString(),
+                            DepartmentEmail = item.Fields.AdditionalData["field_3"].ToString(),
+                            WorkEmail = item.Fields.AdditionalData["field_4"].ToString(),
                         });
 
                         await UserCreation(graphServiceClient, userList, listID, siteID, log);
@@ -367,19 +379,20 @@ namespace appsvc_fnc_dev_bulkuserimport
                 await updateList(graphServiceClient, listID, siteID, itemID, status, errorMessage, log);
                 result = false;
             }
-
             return result;
         }
 
 
     public static async Task<bool> updateList(GraphServiceClient graphServiceClient, string listID, string siteID, string itemID, string status, string errorMessage, ILogger log)
         {
+            //field_5 = status
+            //field_6 = ErrorMessage
             var fieldValueSet = new FieldValueSet
-            {
+            {                    
                 AdditionalData = new Dictionary<string, object>()
                 {
-                    {"Status", status},
-                    {"ErrorMessage", errorMessage}
+                    {"field_5", status},
+                    {"field_6", errorMessage}
                 }
             };
 
