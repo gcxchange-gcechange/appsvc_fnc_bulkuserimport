@@ -53,7 +53,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                     {
                     //field_1 = FirstName
                     //field_2 = LastName
-                    //field_3 = DepartmentEmail
+                    //field_3 = EmailCloud
                     //field_4 = WorkEmail
                     //field_5 = Status
                         new QueryOption("expand", "fields(select=field_1,field_2,field_3,field_4,field_5)")
@@ -80,7 +80,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                             Id = item.Id,
                             FirstName = item.Fields.AdditionalData["field_1"].ToString(),
                             LastName = item.Fields.AdditionalData["field_2"].ToString(),
-                            DepartmentEmail = item.Fields.AdditionalData["field_3"].ToString(),
+                            EmailCloud = item.Fields.AdditionalData["field_3"].ToString(),
                             WorkEmail = item.Fields.AdditionalData["field_4"].ToString(),
                         });
 
@@ -118,7 +118,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                 // check if user exist
                 try
                 {
-                    var userExist = await graphServiceClient.Users.Request().Filter($"mail eq '{item.WorkEmail}'").GetAsync();
+                    var userExist = await graphServiceClient.Users.Request().Filter($"mail eq '{item.EmailCloud}'").GetAsync();
 
                     if (userExist.Count > 0)
                     {
@@ -153,7 +153,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                         var invitation = new Invitation
                         {
                             SendInvitationMessage = false,
-                            InvitedUserEmailAddress = item.WorkEmail,
+                            InvitedUserEmailAddress = item.EmailCloud,
                             InvitedUserType = "member",
                             InviteRedirectUrl = "https://gcxgce.sharepoint.com/",
                             InvitedUserDisplayName = $"{item.FirstName} {item.LastName}",

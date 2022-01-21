@@ -17,7 +17,7 @@ namespace appsvc_fnc_dev_bulkuserimport
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DepartmentEmail { get; set; }
+        public string EmailCloud { get; set; }
         public string WorkEmail { get; set; }
     }
 
