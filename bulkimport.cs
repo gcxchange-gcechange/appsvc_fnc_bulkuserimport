@@ -59,10 +59,19 @@ namespace appsvc_fnc_dev_bulkuserimport
                         new QueryOption("expand", "fields(select=field_1,field_2,field_3,field_4,field_5)")
                     };
                 list = await graphServiceClient.Sites[siteID].Lists[listID].Items
-                        .Request(queryOptions)
-                        .GetAsync();
+                                        .Request(queryOptions)
+                                        .GetAsync();
 
-                foreach (var item in list)
+                var listItems = new List<ListItem>();
+                listItems.AddRange(list.CurrentPage);
+                while (list.NextPageRequest != null)
+                {
+                    list = await list.NextPageRequest.GetAsync();
+                    listItems.AddRange(list.CurrentPage);
+                }
+                log.LogInformation(@"{count}", listItems.Count);
+
+                foreach (var item in listItems)
                 {
                     log.LogInformation(item.Fields.AdditionalData["field_2"].ToString());
                     log.LogInformation(item.Id);
