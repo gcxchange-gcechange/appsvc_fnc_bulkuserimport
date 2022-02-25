@@ -392,7 +392,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                 Body = Body,
                 IsBodyHtml = true,
             };
-            mailMessage.To.Add($"{UserEmail}");
+            mailMessage.To.Add(UserEmail);
            
 
             try
