@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using System.Net.Mail;
 using System.Net;
+using System.Text;
 
 namespace appsvc_fnc_dev_bulkuserimport
 {
@@ -321,6 +322,9 @@ namespace appsvc_fnc_dev_bulkuserimport
             }
             catch (Exception ex)
             {
+                log.LogInformation($"Error welcomegroup id : {welcomeGroup}");
+                log.LogInformation($"Error assign group id : {GCX_Assigned}");
+
                 log.LogInformation($"Error adding User groups : {ex.Message}");
                 string status = "Error";
                 string errorMessage = ex.Message;
@@ -387,13 +391,14 @@ namespace appsvc_fnc_dev_bulkuserimport
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(EmailSender),
+                From = new MailAddress("DoNotReply-NePasRepondre@gcx-gce.gc.ca"),
                 Subject = "You're in! | Vous s'y êtes",
                 Body = Body,
                 IsBodyHtml = true,
             };
+
             mailMessage.To.Add(UserEmail);
-           
+            log.LogInformation($"UserEmail : {UserEmail}");
 
             try
             {
@@ -401,7 +406,7 @@ namespace appsvc_fnc_dev_bulkuserimport
                 log.LogInformation($"User mail successfully");
                 result = true;
             }
-            
+
             catch (ServiceException ex)
             {
                 log.LogInformation($"Error sending email: {ex.Message}");
@@ -435,6 +440,10 @@ namespace appsvc_fnc_dev_bulkuserimport
             }
             catch (Exception ex)
             {
+                log.LogInformation($"Error list ids : {listID}");
+                log.LogInformation($"Error site id : {siteID}");
+                log.LogInformation($"Error item id : {itemID}");
+
                 log.LogInformation($"Error updating the list: {ex}");
             }
             return true;
