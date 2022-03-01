@@ -22,7 +22,7 @@ namespace appsvc_fnc_dev_bulkuserimport
             .Build();
             public static readonly string welcomeGroup = config["welcomeGroup"];
             public static readonly string GCX_Assigned = config["gcxAssigned"];
-            public static readonly string UserSender = config["UserSender"];
+            public static readonly string UserSender = config["DoNotReplayEmail"];
             public static readonly string smtp_port = config["smtp_port"];
 
             private static readonly string smtp_link = config["smtp_link"];
@@ -343,14 +343,6 @@ namespace appsvc_fnc_dev_bulkuserimport
             string smtp_username = Globals.GetSMTP_username();
             string smtp_password = Globals.GetSMTP_password();
 
-            var smtpClient = new SmtpClient(smtp_link)
-            {
-                Port = smtp_port,
-                Credentials = new NetworkCredential(smtp_username, smtp_password),
-                EnableSsl = true,
-            };
-
-
             var Body = @$"
                         (La version française suit)<br><br>
 
@@ -389,21 +381,25 @@ namespace appsvc_fnc_dev_bulkuserimport
 
                         Si vous éprouvez des problèmes en cours de route, veuillez communiquer avec l’équipe de soutien à l’adresse suivante : <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>";
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("DoNotReply-NePasRepondre@gcx-gce.gc.ca"),
-                Subject = "You're in! | Vous s'y êtes",
-                Body = Body,
-                IsBodyHtml = true,
-            };
+            MailMessage mail = new MailMessage();
 
-            mailMessage.To.Add(UserEmail);
+            mail.From = new MailAddress(EmailSender);
+            mail.To.Add(UserEmail);
+            mail.Subject = "You're in! | Vous s'y êtes";
+            mail.Body = Body;
+            mail.IsBodyHtml = true;
+
+            SmtpClient SmtpServer = new SmtpClient(smtp_link);
+            SmtpServer.Port = smtp_port;
+            SmtpServer.Credentials = new System.Net.NetworkCredential(smtp_username, smtp_password);
+            SmtpServer.EnableSsl = true;
+
             log.LogInformation($"UserEmail : {UserEmail}");
 
             try
             {
-                smtpClient.Send(mailMessage);
-                log.LogInformation($"User mail successfully");
+                SmtpServer.Send(mail);
+                log.LogInformation("mail Send");
                 result = true;
             }
 
