@@ -22,7 +22,7 @@ namespace appsvc_fnc_dev_bulkuserimport
             .Build();
             public static readonly string welcomeGroup = config["welcomeGroup"];
             public static readonly string GCX_Assigned = config["gcxAssigned"];
-            public static readonly string UserSender = config["DoNotReplayEmail"];
+            public static readonly string UserSender = config["DoNotReplyEmail"];
             public static readonly string smtp_port = config["smtp_port"];
 
             private static readonly string smtp_link = config["smtp_link"];
