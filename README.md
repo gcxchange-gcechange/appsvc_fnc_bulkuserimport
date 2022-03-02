@@ -37,4 +37,4 @@ All fileld need to be single line expect for ErrorMessage that need to be Multip
 * BulkSiteId: ID of the site where the sharepoint list is
 * welcomeGroup: Id of the welcome group
 * gcxAssigned: id og the gcx assign group
-* UserSender: Id of the user that send the email
+* DoNotReplyEmail: Email that the email service will use as the From
