@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
 
 namespace appsvc_fnc_dev_bulkuserimport
 {
@@ -19,7 +22,25 @@ namespace appsvc_fnc_dev_bulkuserimport
             .Build();
             public static readonly string welcomeGroup = config["welcomeGroup"];
             public static readonly string GCX_Assigned = config["gcxAssigned"];
-            public static readonly string UserSender = config["UserSender"];
+            public static readonly string UserSender = config["DoNotReplyEmail"];
+            public static readonly string smtp_port = config["smtp_port"];
+
+            private static readonly string smtp_link = config["smtp_link"];
+            private static readonly string smtp_username = config["smtp_username"];
+            private static readonly string smtp_password = config["smtp_password"];
+
+            public static string GetSMTP_link()
+            {
+                return smtp_link;
+            }
+            public static string GetSMTP_username()
+            {
+                return smtp_username;
+            }
+            public static string GetSMTP_password()
+            {
+                return smtp_password;
+            }
         }
 
         [FunctionName("CreateUser")]
@@ -301,6 +322,9 @@ namespace appsvc_fnc_dev_bulkuserimport
             }
             catch (Exception ex)
             {
+                log.LogInformation($"Error welcomegroup id : {welcomeGroup}");
+                log.LogInformation($"Error assign group id : {GCX_Assigned}");
+
                 log.LogInformation($"Error adding User groups : {ex.Message}");
                 string status = "Error";
                 string errorMessage = ex.Message;
@@ -313,15 +337,13 @@ namespace appsvc_fnc_dev_bulkuserimport
         public static async Task<bool> sendUserEmail(GraphServiceClient graphServiceClient, string FirstName, string LastName, string UserEmail, string listID, string siteID, string itemID, ILogger log)
         {
             bool result = false;
-            var submitMsg = new Message();
             string EmailSender = Globals.UserSender;
-            submitMsg = new Message
-            {
-                Subject = "You're in! | Vous s'y êtes",
-                Body = new ItemBody
-                {
-                    ContentType = BodyType.Html,
-                    Content = @$"
+            int smtp_port = Int16.Parse(Globals.smtp_port);
+            string smtp_link = Globals.GetSMTP_link();
+            string smtp_username = Globals.GetSMTP_username();
+            string smtp_password = Globals.GetSMTP_password();
+
+            var Body = @$"
                         (La version française suit)<br><br>
 
                         Hi {FirstName} {LastName},<br><br>
@@ -357,29 +379,30 @@ namespace appsvc_fnc_dev_bulkuserimport
                         Nous souhaitons connaître votre opinion! Veuillez prendre quelques minutes pour répondre à notre <a href='https://questionnaire.simplesurvey.com/f/l/gcxchange-gcechange?idlang=FR'>sondage</a> sur le processus d’inscription.<br><br>
 
 
-                        Si vous éprouvez des problèmes en cours de route, veuillez communiquer avec l’équipe de soutien à l’adresse suivante : <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>"
-                },
-                ToRecipients = new List<Recipient>()
-                {
-                    new Recipient
-                    {
-                        EmailAddress = new EmailAddress
-                        {
-                           Address = $"{UserEmail}"
-                        }
-                    }
-                },
-            };
+                        Si vous éprouvez des problèmes en cours de route, veuillez communiquer avec l’équipe de soutien à l’adresse suivante : <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>";
+
+            MailMessage mail = new MailMessage();
+
+            mail.From = new MailAddress(EmailSender);
+            mail.To.Add(UserEmail);
+            mail.Subject = "You're in! | Vous s'y êtes";
+            mail.Body = Body;
+            mail.IsBodyHtml = true;
+
+            SmtpClient SmtpServer = new SmtpClient(smtp_link);
+            SmtpServer.Port = smtp_port;
+            SmtpServer.Credentials = new System.Net.NetworkCredential(smtp_username, smtp_password);
+            SmtpServer.EnableSsl = true;
+
+            log.LogInformation($"UserEmail : {UserEmail}");
+
             try
             {
-                await graphServiceClient.Users[EmailSender]
-                      .SendMail(submitMsg)
-                      .Request()
-                      .PostAsync();
-                log.LogInformation($"User mail successfully");
+                SmtpServer.Send(mail);
+                log.LogInformation("mail Send");
                 result = true;
             }
-            
+
             catch (ServiceException ex)
             {
                 log.LogInformation($"Error sending email: {ex.Message}");
@@ -413,6 +436,10 @@ namespace appsvc_fnc_dev_bulkuserimport
             }
             catch (Exception ex)
             {
+                log.LogInformation($"Error list ids : {listID}");
+                log.LogInformation($"Error site id : {siteID}");
+                log.LogInformation($"Error item id : {itemID}");
+
                 log.LogInformation($"Error updating the list: {ex}");
             }
             return true;
