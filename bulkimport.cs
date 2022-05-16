@@ -353,7 +353,7 @@ namespace appsvc_fnc_dev_bulkuserimport
 
                         Currently, there are two ways to use gcxchange: <br><br>
 
-                        <ol><li><strong>Read articles, create and join GC-wide communities through your personalized homepage. Don’t forget to bookmark it: <a href='https://gcxgce.sharepoint.com/'>gcxgce.sharepoint.com/</a></strong></li>
+                        <ol><li><strong>Read articles, create and join GC-wide communities through your personalized homepage. Don’t forget to bookmark it: <a href='https://gcxgce.sharepoint.com/?gcxLangTour=en'>gcxgce.sharepoint.com/</a></strong></li>
 
                         <li><strong>Chat, call, and co-author with members of your communities using your Microsoft Teams and seamlessly toggle between gcxchange and your departmental environment. <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>Click here to find out how!</a></strong></li></ol>
 
@@ -372,7 +372,7 @@ namespace appsvc_fnc_dev_bulkuserimport
 
                         À l’heure actuelle, il y a deux façons d’utiliser gcéchange : <br><br>
 
-                        <ol><li><strong>Lisez des articles, créez des communautés pangouvernementales et joignez-vous à celles-ci au moyen de votre page d’accueil personnalisée. N’oubliez pas d’ajouter cet espace dans vos favoris : <a href='https://gcxgce.sharepoint.com/'>gcxgce.sharepoint.com/</a></strong></li>
+                        <ol><li><strong>Lisez des articles, créez des communautés pangouvernementales et joignez-vous à celles-ci au moyen de votre page d’accueil personnalisée. N’oubliez pas d’ajouter cet espace dans vos favoris : <a href='https://gcxgce.sharepoint.com/?gcxLangTour=fr'>gcxgce.sharepoint.com/</a></strong></li>
 
                         <li><strong>Clavardez et corédigez des documents avec des membres de vos communautés ou appelez ces membres au moyen de Microsoft Teams et passez facilement de gcéchange à votre environnement ministériel. <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>Cliquez ici pour savoir comment faire.</a></strong></li></ol>
 
