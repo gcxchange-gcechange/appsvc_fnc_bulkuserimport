@@ -406,7 +406,7 @@ namespace appsvc_fnc_dev_bulkuserimport
 
             mail.From = new MailAddress(EmailSender);
             mail.To.Add(UserEmail);
-            mail.Subject = "You're in! | Vous s'y êtes";
+            mail.Subject = "Welcome to GCXchange! | Bienvenue à GCÉchange!";
             mail.Body = Body;
             mail.IsBodyHtml = true;
 
