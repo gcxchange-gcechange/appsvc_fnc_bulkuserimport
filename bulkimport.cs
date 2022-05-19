@@ -344,42 +344,63 @@ namespace appsvc_fnc_dev_bulkuserimport
             string smtp_password = Globals.GetSMTP_password();
 
             var Body = @$"
-                        (La version française suit)<br><br>
-
-                        Hi {FirstName} {LastName},<br><br>
-
-                        We’re happy to announce that you now have access to gcxchange – the Government of Canada’s new digital workspace and modern intranet.<br><br>
-
-
-                        Currently, there are two ways to use gcxchange: <br><br>
-
-                        <ol><li><strong>Read articles, create and join GC-wide communities through your personalized homepage. Don’t forget to bookmark it: <a href='https://gcxgce.sharepoint.com/'>gcxgce.sharepoint.com/</a></strong></li>
-
-                        <li><strong>Chat, call, and co-author with members of your communities using your Microsoft Teams and seamlessly toggle between gcxchange and your departmental environment. <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>Click here to find out how!</a></strong></li></ol>
-
-                        We want to hear from you! Please take a few minutes to respond to our <a href=' https://questionnaire.simplesurvey.com/f/l/gcxchange-gcechange?idlang=EN'>survey</a> about the registration process.<br><br>
-
-                        If you run into any issues along the way, please reach out to the support team at: <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a><br><br>
-                        
-                        ---------------------------------------------------------------------------------<br><br>
-
-                        (The English version precedes)<br><br>
-
-                        Bonjour {FirstName} {LastName},<br><br>
-
-                        Nous sommes heureux de vous annoncer que vous avez maintenant accès à gcéchange – le nouvel espace de travail numérique et intranet moderne du gouvernement du Canada.<br><br>
-
-
-                        À l’heure actuelle, il y a deux façons d’utiliser gcéchange : <br><br>
-
-                        <ol><li><strong>Lisez des articles, créez des collectivités pangouvernementales et joignez-vous à celles-ci au moyen de votre page d’accueil personnalisée. N’oubliez pas d’ajouter cet espace dans vos favoris : <a href='https://gcxgce.sharepoint.com/'>gcxgce.sharepoint.com/</a></strong></li>
-
-                        <li><strong>Clavardez et corédigez des documents avec des membres de vos collectivités ou appelez ces membres au moyen de Microsoft Teams et passez facilement de gcéchange à votre environnement ministériel. <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>Cliquez ici pour savoir comment faire.</a></strong></li></ol>
-
-                        Nous souhaitons connaître votre opinion! Veuillez prendre quelques minutes pour répondre à notre <a href='https://questionnaire.simplesurvey.com/f/l/gcxchange-gcechange?idlang=FR'>sondage</a> sur le processus d’inscription.<br><br>
-
-
-                        Si vous éprouvez des problèmes en cours de route, veuillez communiquer avec l’équipe de soutien à l’adresse suivante : <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>";
+                        <div style='font-family: Helvetica'>
+						<i>(La version française suit)</i> 
+						<br><br>
+						<b>Welcome to GC<b style='color: #1f9cf5'>X</b>change!</b>
+						<br><br>
+						Hi { FirstName } { LastName },
+						<br><br>
+						Your department has given access to <a href='https://gcxgce.sharepoint.com/?gcxLangTour=en'>GCXchange</a> — the GC's new digital workspace and collaboration platform! No log-in or password is needed for GCXchange, since it uses a single sign-on from your government device.
+						<br><br>
+						<center><h2><a href='https://gcxgce.sharepoint.com/?gcxLangTour=en'>You can access GCXchange here</a></h2>
+						<br>
+						<b>Bookmark the above link to your personalized homepage, as well as to <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>GCXchange's MS Teams platform.</a></b></center>
+						<br><br>
+						GCXchange uses a combination of Sharepoint and MS Teams to allow users to collaborate across GC departments and agencies.
+						<br><br>
+						On the Sharepoint side of GCXchange you can:
+						<ol>
+						<li>Read <a href='https://gcxgce.sharepoint.com/sites/news'>GC-wide news and stories</a>.</li>
+						<li>Join one of the many <a href='https://gcxgce.sharepoint.com/sites/Communities'>cross-departmental communities.</a></li>
+						<li>Engage with thematic hubs that focus on issues relevant to the public service.</li>
+						<li>Create a <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/Communities.aspx'>community</a> for interdepartmental collaboration with a dedicated page and Teams space.</li>
+						</ol>
+						<br>
+						On the Teams side of GCXchange you can engage with the communities you have joined, as well as co-autho documents and chat with colleagues in other departments and agencies. To learn how to switch between your departmental and GCXchange MS Teams accounts <a href='https://www.youtube.com/watch?v=71bULf1UqGw&list=PLWhPHFzdUwX98NKbSG8kyq5eW9waj3nNq&index=8'>watch a video tutorial</a> or <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/FAQ.aspx'>access the step-by-step guidance</a>.
+						<br><br>
+						If you run into a problem or have a question, contact: <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>
+						<br><br>
+						Happy collaborating!
+						<br><br>
+						<hr>
+						<br><br>
+						<b>Bienvenue à GC<b style='color: #1f9cf5'>É</b>change!</b>
+						<br><br>
+						Bonjour { FirstName } { LastName },
+						<br><br>
+						Votre ministère vous a donné accès à <a href='https://gcxgce.sharepoint.com/SitePages/fr/Home.aspx?gcxLangTour=fr'>GCÉchange</a>, la nouvelle plateforme de collaboration et de travail numérique du GC! Aucum nom d'utilisateur ni mot de passe n'est requis pour accéder à GCÉchange, puisque cette platforme est intégrée à la session unique que vous ouvrez à partir de votre appareil gouvernemental.
+						<br><br>
+						<center><h2><a href='https://gcxgce.sharepoint.com/SitePages/fr/Home.aspx?gcxLangTour=fr'>Vous pouvez accéder à GCÉchange ici</a></h2>
+						<br>
+						<b>Ajoutez le lien ci-dessus comme favori à votre page d'accueil personnalisée ainsi qu'à <a href='https://teams.microsoft.com/_?tenantId=f6a7234d-bc9b-4520-ad5f-70669c2c7a9c#/conversations/General?threadId=19:OXWdygF2pylAN26lrbZNN-GGzf8W9YEpe2EBawXtM0s1@thread.tacv2&ctx=channel'>la plateforme Microsoft Teams de gcéchange.</a></b></center>
+						<br><br>
+						GCÉchange utilise SharePoint et Teams pour permettre aux utilisateurs de collaborer avec l’ensemble des ministères et organismes du GC.
+						<br><br>
+						Du côté SharePoint de GCÉchange, vous pouvez :
+						<ol>
+						<li>lire <a href='https://gcxgce.sharepoint.com/sites/News/SitePages/fr/Home.aspx'></a>les nouvelles et les histoires du GC.</li>
+						<li>participer à l’une des nombreuses <a href='https://gcxgce.sharepoint.com/sites/Communities/SitePages/fr/Home.aspx'>participer à l’une des nombreuses collectivités interministérielles.</a></li>
+						<li>participer à des carrefours thématiques qui se concentrent sur ces enjeux pertinents pour la fonction publique.</li>
+						<li>créer une <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/fr/Communities.aspx'>collectivité</a> de collaboration interministérielle qui a sa page et son espace Teams.</li>
+						</ol>
+						<br>
+						Du côté Teams de GCÉchange, vous pouvez communiquer avec les collectivités desquelles vous êtes membre, corédiger des documents et clavarder avec des collègues d’autres ministères et organismes. Pour savoir comment passer d’un compte ministériel à un compte GCÉchange dans Teams, <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/fr/FAQ.aspx'>regardez un tutoriel vidéo ou accédez aux directives étape par étape.</a>
+						<br><br>
+						Si vous avez un problème ou une question, écrivez à : <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>.
+						<br><br>
+						Bonne collaboration!
+						</div>";
 
             MailMessage mail = new MailMessage();
 
