@@ -367,7 +367,7 @@ namespace appsvc_fnc_dev_bulkuserimport
 				<li>Create a <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/Communities.aspx'>community</a> for interdepartmental collaboration with a dedicated page and Teams space.</li>
 			</ol>
 			<br>
-			On the Teams side of GCXchange you can engage with the communities you have joined, as well as co-autho documents and chat with colleagues in other departments and agencies. To learn how to switch between your departmental and GCXchange MS Teams accounts <a href='https://www.youtube.com/watch?v=71bULf1UqGw&list=PLWhPHFzdUwX98NKbSG8kyq5eW9waj3nNq&index=8'>watch a video tutorial</a> or <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/FAQ.aspx'>access the step-by-step guidance</a>.
+			On the Teams side of GCXchange you can engage with the communities you have joined, as well as co-author documents and chat with colleagues in other departments and agencies. To learn how to switch between your departmental and GCXchange MS Teams accounts <a href='https://www.youtube.com/watch?v=71bULf1UqGw&list=PLWhPHFzdUwX98NKbSG8kyq5eW9waj3nNq&index=8'>watch a video tutorial</a> or <a href='https://gcxgce.sharepoint.com/sites/Support/SitePages/FAQ.aspx'>access the step-by-step guidance</a>.
 			<br><br>
 			If you run into a problem or have a question, contact: <a href='mailto:support-soutien@gcx-gce.gc.ca'>support-soutien@gcx-gce.gc.ca</a>
 			<br><br>
